@@ -10,11 +10,11 @@ It then uses a python script to parse the SVG and generates openscad geometry.
 
 from this:
 
-![Source Image](artwork.jpg)
+![Source Image](scadtrace/raw/master/artwork.jpg)
 
 to this:
 
-![Geometry](artwork-projected.png)
+![Geometry](scadtrace/raw/master/artwork-projected.png)
 
 Work in Progress
 ----------------
