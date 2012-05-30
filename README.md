@@ -1,12 +1,11 @@
 SCADTrace
 =========
 
-This is a script set to convert a black-and-white bitmap into an
+This is a toolset to convert a black-and-white bitmap into an
 openscad object suitable for using to emboss a cylindrical object.
 
-It uses potrace to generate an SVG representation of the shape.  potrace rocks.
-
-It then uses a python script to parse the SVG and generates openscad geometry.
+It uses [potrace](http://potrace.sourceforge.net/) to generate an SVG representation of the figure from a bitmap.  potrace rocks.  
+It then uses a python script to parse the SVG, extract the path geometry and generate openscad geometry.
 
 from this:
 
