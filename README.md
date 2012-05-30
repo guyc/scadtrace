@@ -7,7 +7,7 @@ openscad object suitable for using to emboss a cylindrical object.
 It uses [potrace](http://potrace.sourceforge.net/) to generate an SVG representation of the figure from a bitmap.  potrace rocks.  
 It then uses a python script to parse the SVG, extract the path geometry and generate openscad geometry.
 
-from this:
+from something like this (image by Biofarben GmbH):
 
 ![Source Image](scadtrace/raw/master/artwork.jpg)
 
