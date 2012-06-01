@@ -15,14 +15,21 @@ to this:
 
 ![Geometry](scadtrace/raw/master/artwork-projected.png)
 
-Work in Progress
-----------------
+Update
+------
 
-The openscad geometry generated does not yet include the inner or outer faces.
-OpenSCAD polyhedrons are expressed as triangles, so we need to tesselate the face polygons
-before we can generate the face geometry.  I think the best solution will be to 
-use [Triangle](http://www.cs.cmu.edu/~quake/triangle.html).
+Generating the inner and outer faces of the geometry presents a somewhat complicated
+problem because the face needs to be expressed as triangles.
+I've used [Triangle](http://www.cs.cmu.edu/~quake/triangle.html) to generate
+tesselations, and it works well.  There are still some issues remaining
+and the code is far from clean.
 
-We also need to ensure that the triangle faces are small enough to wrap
-around the outside of the cylinder, although that may fall out of triangle naturally.
-Maybe we can specify a maximum size of the tesselation triangles?
+![Geometry](scadtrace/raw/master/artwork-projected2.png)
+
+Note that we need to ensure that the triangle faces are small enough to wrap
+around the outside of the cylinder.  So far using the "quality" setting on
+triangle is giving me suitably small triangles, but I expect with large simple
+shapes this may need more work.
+
+Holes are not yet directly supported but you should be able to create separate positive
+and negative geometry and use CSG to punch the holes.
