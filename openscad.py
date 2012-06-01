@@ -6,18 +6,21 @@ class OpenscadPolyhedron:
         self.triangles = []
 
 
-    def render(self):
-        sys.stdout.write("polyhedron (\n")
-        sys.stdout.write("  points = [")
+    def write(self, file=None):
+        if file == None:
+            file = sys.stdout
+            
+        file.write("polyhedron (\n")
+        file.write("  points = [")
         for point in self.points:
-            sys.stdout.write("[")
-            sys.stdout.write(",".join(map(str,point)))
-            sys.stdout.write("],")
-        sys.stdout.write("],\n")
-        sys.stdout.write("  triangles = [")
+            file.write("[")
+            file.write(",".join(map(str,point)))
+            file.write("],\n")
+        file.write("],\n")
+        file.write("  triangles = [")
         for triangle in self.triangles:
-            sys.stdout.write("[")
-            sys.stdout.write(",".join(map(str,triangle)))
-            sys.stdout.write("],")
-        sys.stdout.write("]\n")
-        sys.stdout.write(");\n")
+            file.write("[")
+            file.write(",".join(map(str,triangle)))
+            file.write("],\n")
+        file.write("]\n")
+        file.write(");\n")

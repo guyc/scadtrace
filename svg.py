@@ -189,6 +189,17 @@ class Svg:
     #print paths
     return paths
 
+  # polygon is [[x,y]...]
+  # remove adjacent identical pairs.
+  def thin(self, polygon):
+      lastCoord = None
+      thinPolygon = []
+      for coord in polygon:
+          if coord != lastCoord:
+              thinPolygon.append(coord)
+              lastCoord = coord
+      return thinPolygon
+
   def polygons(self):
     polygons = []
     state = SvgState()
@@ -199,5 +210,5 @@ class Svg:
       state.y0 = state.y
       for cmd in path:
         polygon.extend(cmd.run(state))
-      polygons.append(polygon)
+      polygons.append(self.thin(polygon))
     return polygons
