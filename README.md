@@ -33,3 +33,5 @@ shapes this may need more work.
 
 Holes are not yet directly supported but you should be able to create separate positive
 and negative geometry and use CSG to punch the holes.
+
+![Source Image](scadtrace/raw/master/artwork-tesselated.jpg)

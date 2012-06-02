@@ -1,5 +1,7 @@
 import subprocess
 import re
+from sets import Set
+
 # By default, Triangle copies all
 # vertices in the input .node file to the output .node file, in the
 # same order, so their indices do not change.
@@ -11,7 +13,6 @@ class QuakeTriangle:
 
     def polyToMesh(self,poly,suffix=''):
         base = "/tmp/triangle" # REVISIT - use tmpnam
-        print len(poly.vertices)
         poly.writePoly(base+".1.poly")
         cmd = [self.triangle]
         # -I supresses iteration numbers in output file names
@@ -30,6 +31,9 @@ class QuakeTriangle:
         mesh.readPoly(base+".2.poly")  # populates segments (boundary), clears vertices
         mesh.readNode(base+".2.node") # populates vertices
         mesh.readEle(base+".2.ele") # populates triangles
+        # we actually discard the segments and regenerate them here
+        mesh.generateSegments()
+
         return mesh
     
 class QuakeGeom:
@@ -52,7 +56,7 @@ class QuakeGeom:
     def orderSegments(self, segments):
         ordered = []
         while len(segments)>0:
-            print "starting new chain"
+            # print "starting new chain"
             segment = segments.pop(0)
             ordered.append(segment)
             done = False
@@ -73,7 +77,37 @@ class QuakeGeom:
                         done = False
                         break
         return ordered    
-        
+
+    # grrr - to generate the segements from the triangles we need to distinguish
+    # which two sides of a triangle with three points marked as boundary vertices
+    # are in the boundary.  We elimate pairs which appear both forward and reverse.
+    
+    def generateSegments(self):
+        # using self.triangles (that have reliable winding order)
+        # and self.vertices with a boundary indicator
+        # reconstruct segments[] to identify all of the line segments
+        # along the border in the same winding order as the triangles (which
+        # is counter-clockwise
+
+        segForward = Set()
+        segReverse = Set()
+        for triangle in self.triangles:
+            for t0 in range(0,3):
+                v0 = triangle[ t0]
+                v1 = triangle[(t0+1)%3]
+                if self.vertices[v0][2]==1.0 and self.vertices[v1][2]==1.0:
+                    segForward.add(tuple([v0,v1]))
+                    segReverse.add(tuple([v1,v0]))
+
+        segments = list(segForward-segReverse)
+
+        # even though orderSegments could reverse the order of the vertex pairs,
+        # I assert it never will because the order of the first segment dictates
+        # the remainder.  In fact because we are passing tuples, the current
+        # implementation of orderSegments will crash if it tries to reverse the
+        # order of an immutable tuple.
+        self.segments = self.orderSegments(segments)
+
 class QuakePolygon(QuakeGeom):
 
     def __init__(self, filename=None):
@@ -121,8 +155,6 @@ class QuakePolygon(QuakeGeom):
         for i in range(0,noHoles):
             line = lines.pop(0)
             self.holes.append([line[1], line[2]])
-
-        print lines
 
     # First line: <# of vertices> <dimension (must be 2)> <# of attributes> <# of boundary markers (0 or 1)>
     # Following lines: <vertex #> <x> <y> [attributes] [boundary marker]

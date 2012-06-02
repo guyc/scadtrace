@@ -55,8 +55,9 @@ def polyhedronFromMesh(z0, z1, mesh):
         v3 = segment[0] + m
         v2 = segment[1] + m
 
-        polyhedron.triangles.append([v0,v1,v2])
-        polyhedron.triangles.append([v3,v2,v1])
+        # order of segments matches order of triangles which is anticlockwise so we reverse it.
+        polyhedron.triangles.append([v2,v1,v0])
+        polyhedron.triangles.append([v1,v2,v3])
 
     # front and back face triangles
     for triangle in mesh.triangles:
@@ -140,7 +141,7 @@ for polygon in polygons:
 
     tri = QuakeTriangle()
     # set options on tri if you want
-    tri.quality = False
+    tri.quality = True
     
     qp = QuakePolygon()
 
