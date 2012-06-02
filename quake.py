@@ -9,20 +9,27 @@ class QuakeTriangle:
         self.quality = True
         self.triangle = "/Users/guy/src/triangle/triangle"
 
-    def polyToMesh(self,poly):
+    def polyToMesh(self,poly,suffix=''):
         base = "/tmp/triangle" # REVISIT - use tmpnam
-        poly.writePoly(base+".poly")
+        print len(poly.vertices)
+        poly.writePoly(base+".1.poly")
+        cmd = [self.triangle]
         # -I supresses iteration numbers in output file names
+        # cmd += ["-I"]
         # -z uses 0-based numbering
-        cmd = [self.triangle,"-I","-z"]
+        cmd += ["-z"]
         if self.quality:
             cmd += ["-q"]
-        cmd += ["-p", base+".poly"]
+        cmd += ["-p", base+".1.poly"]
         print cmd
         result = subprocess.call(cmd)
         mesh = QuakeMesh()
-        mesh.readEle(base+".ele")
-        mesh.readNode(base+".node")
+        # The polygon written back out may have additional boundary points
+        # inserted.  We should use that geometry and dump the originally specified 
+        # one.
+        mesh.readPoly(base+".2.poly")  # populates segments (boundary), clears vertices
+        mesh.readNode(base+".2.node") # populates vertices
+        mesh.readEle(base+".2.ele") # populates triangles
         return mesh
     
 class QuakeGeom:
@@ -38,6 +45,34 @@ class QuakeGeom:
                 lines.append(numbers)
         file.close
         return lines
+
+    # for some reason segments are not in a
+    # predictable order.  Restring them into
+    # a continuous string
+    def orderSegments(self, segments):
+        ordered = []
+        while len(segments)>0:
+            print "starting new chain"
+            segment = segments.pop(0)
+            ordered.append(segment)
+            done = False
+            while not done:
+                done = True
+                for i in range(0,len(segments)):
+                    if segment[1] == segments[i][0]:
+                        #print "found ordered pair at {0}".format(i)
+                        segment = segments.pop(i)
+                        ordered.append(segment)
+                        done = False
+                        break
+                    elif segment[1] == segments[i][1]:
+                        #print "found misordered pair at {0}".format(i)
+                        segment = segments.pop(i)
+                        segment[0],segment[1] = segment[1],segment[0]
+                        ordered.append(segment)
+                        done = False
+                        break
+        return ordered    
         
 class QuakePolygon(QuakeGeom):
 
@@ -78,6 +113,7 @@ class QuakePolygon(QuakeGeom):
             a = int(line.pop(0))
             b = int(line.pop(0))
             self.segments.append([a,b]+line) # cast segments to ints
+        self.segments = self.orderSegments(self.segments)
         line = lines.pop(0)    
         noHoles = int(line[0])
 
@@ -125,7 +161,7 @@ class QuakePolygon(QuakeGeom):
             
         file.close()
         
-class QuakeMesh(QuakeGeom):
+class QuakeMesh(QuakePolygon):
 
     # First line: <# of triangles> <nodes per triangle> <# of attributes>
     # Remaining lines: <triangle #> <node> <node> <node> ... [attributes]

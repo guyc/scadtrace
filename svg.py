@@ -86,7 +86,7 @@ class SvgCurveCmd(SvgCmd):
     # ref: http://www.c-sharpcorner.com/uploadfile/apundit/drawingcurves11182005012515am/drawingcurves.aspx
   def points(self, state, curve):
     points = []
-    divisions = 20  # REVISIT - determine this automatically
+    divisions = 10  # REVISIT - determine this automatically
 
     curve = self.absolute(state, curve)
 
@@ -198,6 +198,11 @@ class Svg:
           if coord != lastCoord:
               thinPolygon.append(coord)
               lastCoord = coord
+
+      # this polygon is implicitly closed, so remove any explicit closure
+      if polygon[0]==lastCoord:
+          polygon.pop()
+          
       return thinPolygon
 
   def polygons(self):
