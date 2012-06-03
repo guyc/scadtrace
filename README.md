@@ -44,3 +44,8 @@ be deformed into a cylinder without nasty distortion of the faces.
 
 ![Quality Tesselation Projected](scadtrace/raw/master/artwork-tesselated-projected.png)
 
+Here's the artwork used as a negative geometry to emboss the inside of a
+translucent diffuser.
+
+![Translucent Embossed Diffuser](scadtrace/raw/master/artwork-embossed-lens.png)
+

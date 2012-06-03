@@ -19,6 +19,8 @@ filename = sys.argv[1]
 if not os.path.exists(filename):
   raise Exception('File not found: '+filename)
 
+moduleName = filename.split(".",1)[0]
+
 def dumpPoints(points):
   for point in points:
     print point[0],",",point[1]
@@ -89,7 +91,9 @@ def projectToCylinder(polyhedron, angle, width):
   # R = circum / 2pi
   circum = width * 360 / angle
   radius = circum / (2 * math.pi)
-    
+  # scale to unit radius for easy rescaling
+  scale = 100.0/radius
+  
   for point in polyhedron.points:
       x0 = point[0]
       y0 = point[1]
@@ -101,11 +105,12 @@ def projectToCylinder(polyhedron, angle, width):
       x1 = -math.sin(a) * r
       y1 = y0
       z1 = math.cos(a) * r
-      point[0] = x1
-      point[1] = y1
-      point[2] = z1
+      point[0] = x1 * scale
+      point[1] = y1 * scale
+      point[2] = z1 * scale
       
 scadFile = open("artwork.scad", "w") # hack
+scadFile.write("module {0}() {{\n".format(moduleName))
 
 svg = Svg(filename)
 
@@ -159,16 +164,18 @@ for polygon in polygons:
     # the original edge points.  Constructing the polyhedron
     # takes a couple of passes
 
-    polyhedron = polyhedronFromMesh(-50,50, mesh)
+    polyhedron = polyhedronFromMesh(-50,0, mesh)
     if True:
         rotateXY(polyhedron)
-        angle = 90
         width = maxy-miny
     else:
         width = maxx-minx
+
+    angle = 60
 
     projectToCylinder(polyhedron, angle, width)
     polyhedron.write(scadFile)
     index+=1
 
+scadFile.write("}\n")
 scadFile.close()
