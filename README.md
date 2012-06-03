@@ -38,3 +38,9 @@ Tesselations
 ------------
 Here's a close-up that shows the effect of the triangulation.  Pretty, hey?
 ![Quality Tesselation](scadtrace/raw/master/artwork-tesselated.png)
+
+The "quality" option introduces internal nodes which allow the geometry to
+be deformed into a cylinder without nasty distortion of the faces.
+
+![Quality Tesselation Projected](scadtrace/raw/master/artwork-tesselated-projected.png)
+
