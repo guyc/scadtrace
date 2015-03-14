@@ -52,16 +52,17 @@ translucent diffuser.
 Installation of potrace
 -----------------------
 Under OSX Mavericks, the steps are:
+ 1. mkdir potrace; cd potrace
  1. wget http://potrace.sourceforge.net/download/potrace-1.11.tar.gz
  2. tar -zxf potrace-1.11.tar.gz
  3. cd potrace-1.11
  4. ./configure
  5. make
- 6. sudo make install
 
 Installation of Triangle
 ------------------------
 Under OSX Mavericks the steps are:
+ 1. mkdir triangle; cd triangle
  1. wget http://www.netlib.org/voronoi/triangle.zip
  2. unzip triangle.zip
  3. vi makefile
@@ -70,9 +71,9 @@ Under OSX Mavericks the steps are:
 
 Installation of ImageMagick
 ---------------------------
+Note: you probably don't want to install like this.  Install a precompiled package for your operating system.
  1. wget ftp://mirror.aarnet.edu.au/pub/imagemagick/ImageMagick-6.9.0-10.tar.bz2
  2. tar -zxf ImageMagick-6.9.0-10.tar.bz2
  3. ./configure
  4. make
  5. sudo make install
-
