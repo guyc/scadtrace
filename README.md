@@ -9,11 +9,11 @@ It then uses a python script to parse the SVG, extract the path geometry and gen
 
 from something like this (image by Biofarben GmbH):
 
-![Source Image](scadtrace/raw/master/artwork.jpg)
+![Source Image](https://raw.githubusercontent.com/guyc/scadtrace/master/artwork.jpg)
 
 to this:
 
-![Geometry](scadtrace/raw/master/artwork-projected.png)
+![Geometry](https://raw.githubusercontent.com/guyc/scadtrace/master/artwork-projected.png)
 
 Update
 ------
@@ -24,7 +24,7 @@ I've used [Triangle](http://www.cs.cmu.edu/~quake/triangle.html) to generate
 tesselations, and it works well.  There are still some issues remaining
 and the code is far from clean.
 
-![Geometry](scadtrace/raw/master/artwork-projected2.png)
+![Geometry](https://raw.githubusercontent.com/guyc/scadtrace/master/artwork-projected2.png)
 
 Note that we need to ensure that the triangle faces are small enough to wrap
 around the outside of the cylinder.  So far using the "quality" setting on
@@ -37,15 +37,15 @@ and negative geometry and use CSG to punch the holes.
 Tesselations
 ------------
 Here's a close-up that shows the effect of the triangulation.  Pretty, hey?
-![Quality Tesselation](scadtrace/raw/master/artwork-tesselated.png)
+![Quality Tesselation](https://raw.githubusercontent.com/guyc/scadtrace/master/artwork-tesselated.png)
 
 The "quality" option introduces internal nodes which allow the geometry to
 be deformed into a cylinder without nasty distortion of the faces.
 
-![Quality Tesselation Projected](scadtrace/raw/master/artwork-tesselated-projected.png)
+![Quality Tesselation Projected](https://raw.githubusercontent.com/guyc/scadtrace/master/artwork-tesselated-projected.png)
 
 Here's the artwork used as a negative geometry to emboss the inside of a
 translucent diffuser.
 
-![Translucent Embossed Diffuser](scadtrace/raw/master/artwork-embossed-lens.png)
+![Translucent Embossed Diffuser](https://raw.githubusercontent.com/guyc/scadtrace/master/artwork-embossed-lens.png)
 
