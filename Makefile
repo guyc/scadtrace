@@ -1,7 +1,12 @@
-all:
-	convert artwork.jpg artwork.bmp
-	potrace --svg artwork.bmp
-	./svgtoscad.py artwork.svg
+.PHONY: all bmp svg scad
 
-tri:
-	~/src/triangle/triangle -p A.poly
+all:	bmp svg scad
+
+bmp:
+	convert artwork.jpg artwork.bmp
+
+svg:
+	potrace --svg artwork.bmp
+
+scad:
+	./svgtoscad.py artwork.svg

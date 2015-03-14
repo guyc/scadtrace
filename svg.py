@@ -150,8 +150,8 @@ class Svg:
       'l'    : re.compile('^\s*(l)\s*((-?\d+\s*){2,})\s*'),
     }
     svgNode = self.doc.documentElement
-    self.width = int(svgNode.attributes["width"].value.rstrip("pt"))
-    self.height = int(svgNode.attributes["height"].value.rstrip("pt"))
+    self.width = float(svgNode.attributes["width"].value.rstrip("pt"))
+    self.height = float(svgNode.attributes["height"].value.rstrip("pt"))
 
   def parsePath(self, pathString):
     cmds = []

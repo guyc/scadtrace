@@ -15,6 +15,11 @@ to this:
 
 ![Geometry](https://raw.githubusercontent.com/guyc/scadtrace/master/artwork-projected.png)
 
+Dependencies
+------------
+ # [potrace 1.11](http://potrace.sourceforge.net/) to generate an SVG representation of the figure from a bitmap.
+ # [triangle](http://www.cs.cmu.edu/~quake/triangle.html) to tesselate the SVG shapes into triangles.
+
 Update
 ------
 

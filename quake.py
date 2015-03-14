@@ -9,7 +9,7 @@ from sets import Set
 class QuakeTriangle:
     def __init__(self):
         self.quality = True
-        self.triangle = "/Users/guy/src/triangle/triangle"
+        self.triangle = "./triangle/triangle"
 
     def polyToMesh(self,poly,suffix=''):
         base = "/tmp/triangle" # REVISIT - use tmpnam
