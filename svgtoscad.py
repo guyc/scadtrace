@@ -2,6 +2,7 @@
 import sys
 import os
 import math
+import argparse
 from svg import *
 from openscad import *
 from quake import *
@@ -15,9 +16,21 @@ from quake import *
 # so instead of looking at options to keep the edge intact, lets
 # figure out how to find these edges.
 
-filename = sys.argv[1]
+parser = argparse.ArgumentParser(description='Translate an SVG file to Openscad')
+parser.add_argument('scadfile')
+parser.add_argument('--triangle', help='location of triangle executable', default='triangle')
+parser.add_argument('--angle', help='angle in degrees of the finished cylindrical segment', default=60.0, type=float)
+parser.add_argument('--rotate', action='store_true', help='if present, rotate the image before projecting')
+args = parser.parse_args()
+
+triangleBin = args.triangle
+projAngle = args.angle
+rotate = args.rotate
+
+filename = args.scadfile
 if not os.path.exists(filename):
   raise Exception('File not found: '+filename)
+
 
 moduleName = filename.split(".",1)[0]
 
@@ -145,6 +158,7 @@ for polygon in polygons:
     #print("")
 
     tri = QuakeTriangle()
+    tri.triangle = triangleBin
     # set options on tri if you want
     tri.quality = True
     
@@ -165,13 +179,13 @@ for polygon in polygons:
     # takes a couple of passes
 
     polyhedron = polyhedronFromMesh(-50,0, mesh)
-    if True:
+    if rotate:
         rotateXY(polyhedron)
         width = maxy-miny
     else:
         width = maxx-minx
 
-    angle = 60
+    angle = projAngle
 
     projectToCylinder(polyhedron, angle, width)
     polyhedron.write(scadFile)

@@ -21,10 +21,18 @@ I've used [Triangle](http://www.cs.cmu.edu/~quake/triangle.html) to generate
 tesselations, and it works well.  There are still some issues remaining
 and the code is far from clean.
 
+Using
+-----
+The steps for converting a JPG to an openscad model are in the Makefile.
+ 1. convert the source image into a BMP file using convert from imagemagick
+ 2. convert the BMP into an SVG outline using potrace
+ 3. convert the SVG into an openscad model using svgtoscad.py, which invokes triangle to tessellate the faces.  svgtoscad.py takes the location of the triangle binary as a command line argument.
+
 Dependencies
 ------------
  1. [potrace 1.11](http://potrace.sourceforge.net/) to generate an SVG representation of the figure from a bitmap.
  2. [triangle](http://www.cs.cmu.edu/~quake/triangle.html) to tesselate the SVG shapes into triangles.
+ 3. [imagemagick](http://www.imagemagick.org/) to convert source image to BMP
 
 Tesselations
 ------------
@@ -59,4 +67,12 @@ Under OSX Mavericks the steps are:
  3. vi makefile
  4. Delete '-DLINUX' from the makefile
  5. make triangle
+
+Installation of ImageMagick
+---------------------------
+ 1. wget ftp://mirror.aarnet.edu.au/pub/imagemagick/ImageMagick-6.9.0-10.tar.bz2
+ 2. tar -zxf ImageMagick-6.9.0-10.tar.bz2
+ 3. ./configure
+ 4. make
+ 5. sudo make install
 
